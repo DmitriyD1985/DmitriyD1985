@@ -25,9 +25,7 @@ public class CubeController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Cube> getById(
-            @PathVariable(name = "id") Long id
-    ) throws NotFoundException {
+    public ResponseEntity<Cube> getById(@PathVariable(name = "id") Long id) throws NotFoundException {
         Optional<Cube> repositoryResult = cubeRepository.findById(id);
         if (repositoryResult.isPresent()) {
             return new ResponseEntity<>(repositoryResult.get(), HttpStatus.OK);
@@ -37,9 +35,7 @@ public class CubeController {
     }
 
     @PostMapping
-    public void createCube(
-            @RequestBody Cube cube
-    ) {
+    public void createCube(@RequestBody Cube cube) {
         cubeRepository.save(cube);
     }
 
@@ -51,15 +47,17 @@ public class CubeController {
     ) throws NotFoundException {
         if (cubeRepository.existsById(id)) {
             //TODO: have to implement update
+            Cube editedCube = cubeRepository.findById(cube.getId()).get();
+            editedCube.setColor(cube.getColor());
+            editedCube.setProductionLocation(cube.getProductionLocation());
+            cubeRepository.save(editedCube);
          } else {
             throw new NotFoundException("a cube with id = " + id + " not exist");
         }
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteCube(
-            @PathVariable(name = "id") Long id
-    ) throws NotFoundException {
+    public void deleteCube(@PathVariable(name = "id") Long id) throws NotFoundException {
         if (cubeRepository.existsById(id)) {
             cubeRepository.deleteById(id);
         } else {

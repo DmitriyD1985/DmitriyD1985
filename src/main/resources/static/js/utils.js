@@ -14,8 +14,12 @@
 
         const dropDown = createRecordView.querySelector('.ffb-locations-dropdown-wrapper');
         dropDown.addEventListener('click', (event) => {
+            //TODO: move to function
             const dd = ffbUtils.store.createRecordView.querySelector('.ffb-locations-dropdown-wrapper');
-            console.log('click', event);
+            let filedLocation = document.body.querySelector('.ffb-edit-field-location');
+            const locationField = document.body.querySelector('.ffb-edit-record-location-name');
+            locationField.innerText = event.target.innerText;
+            dropDown.classList.add('display-none');
             event.preventDefault();
             event.stopImmediatePropagation();
         });
@@ -26,15 +30,14 @@
         dropDown.classList.add('display-none');
         createRecordView.querySelector('.ffb-edit-field-location')
             .addEventListener('click', function (event) {
-                console.log('ddddd');
-                const down = document.body.querySelector('.ffb-locations-dropdown-wrapper');
-                down.classList.remove('display-none');
-                console.log(down);
-                // const locations = document.body.querySelector('.ffb-locations-dropdown');
-                // locations.innerHTML = '';
-                // ffbUtils.store.locations.forEach((l) => {
-                // })
-                //     locations.append(ffbUtils.location.createDropDownElement(l.name));
+                //TODO: move to function
+                const dropDown = document.body.querySelector('.ffb-locations-dropdown-wrapper');
+                dropDown.classList.remove('display-none');
+                const locations = document.body.querySelector('.ffb-locations-dropdown');
+                locations.innerHTML = '';
+                ffbUtils.store.locations.forEach((l) => {
+                    locations.append(ffbUtils.location.createDropDownElement(l.name));
+                });
                 event.preventDefault();
                 event.stopImmediatePropagation();
             });
@@ -50,10 +53,43 @@
             .addEventListener('click', function () {
                 ffbUtils.spinner.fullScreenOverlay.style.display = 'none';
                 ffbUtils.store.createRecordView.style.display = 'none';
+                const color = document.body.querySelector('.ffb-edit-record-color').value;
+                const locationField = document.body.querySelector('.ffb-edit-record-location-name');
+                const prodLocation = ffbUtils.store.locations.find(
+                    (l) => l.name === locationField.innerText
+                );
+                let cube = {
+                    color: color,
+                    productionLocation: prodLocation,
+                    size: 0
+                };
+                if (ffbUtils.store.editCube) {
+                    const editCube = ffbUtils.store.editCube;
+                    cube.id = editCube.id;
+                    cube.size = editCube.size;
+                    ffbUtils.ajax
+                        .updateCube(cube)
+                        .then(
+                            (data) => {
+                                ffbUtils.cube.refreshTable();
+                            },
+                            (error) => console.error(error)
+                        );
+                } else {
+                    ffbUtils.ajax
+                        .saveCube(cube)
+                        .then(
+                            (data) => {
+                                ffbUtils.cube.refreshTable();
+                            },
+                            (error) => console.error(error)
+                        );
+                }
             });
 
         document.body.querySelector('.ffb-create-record')
             .addEventListener('click', () => {
+                //TODO: rename method
                 ffbUtils.cube.createNew(false);
             });
 
@@ -68,7 +104,8 @@
     ffbUtils.store = {
         locations: [],
         cubes: [],
-        cubeViews: []
+        cubeViews: [],
+        editCube: null
     };
 
     ffbUtils.spinner = {};
@@ -89,19 +126,18 @@
         spinner.classList.add(this.spinnerClassName);
         spinnerContainer.append(spinner);
 
-        spinner.innerHTML = `
-                                        <div class="sk-grid">
-                                            <div class="sk-grid-cube"></div>
-                                            <div class="sk-grid-cube"></div>
-                                            <div class="sk-grid-cube"></div>
-                                            <div class="sk-grid-cube"></div>
-                                            <div class="sk-grid-cube"></div>
-                                            <div class="sk-grid-cube"></div>
-                                            <div class="sk-grid-cube"></div>
-                                            <div class="sk-grid-cube"></div>
-                                            <div class="sk-grid-cube"></div>
-                                        </div>
-                                      `;
+        spinner.innerHTML = ` <div class="sk-grid">
+                                   <div class="sk-grid-cube"></div>
+                                   <div class="sk-grid-cube"></div>
+                                   <div class="sk-grid-cube"></div>
+                                   <div class="sk-grid-cube"></div>
+                                   <div class="sk-grid-cube"></div>
+                                   <div class="sk-grid-cube"></div>
+                                   <div class="sk-grid-cube"></div>
+                                   <div class="sk-grid-cube"></div>
+                                   <div class="sk-grid-cube"></div>
+                               </div>
+                             `;
         document.body.prepend(spinnerContainer);
         ffbUtils.spinner.spinnerContainer = spinnerContainer;
     };
@@ -199,7 +235,6 @@
 
     ffbUtils.cube.createRecord = function (cube) {
         const viewTemplate = ffbUtils.templates.record;
-        console.log('view', viewTemplate);
         const colorCell = viewTemplate.querySelector('.cube-color');
         colorCell.innerHTML = `
             <div class="ffb-cube-color-sample" style="background-color: ${cube.color}"></div>
@@ -225,6 +260,17 @@
     ffbUtils.cube.createNew = function (edit, cube) {
         ffbUtils.store.createRecordView.style.display = '';
         ffbUtils.spinner.fullScreenOverlay.style.display = '';
+        const editField = document.body.querySelector('.ffb-edit-record-color');
+        const locationField = document.body.querySelector('.ffb-edit-record-location-name');
+        if (edit) {
+            editField.value = cube.color;
+            locationField.innerText = cube.productionLocation.name;
+            ffbUtils.store.editCube = cube;
+        } else {
+            editField.value = '';
+            locationField.innerText = '';
+            ffbUtils.store.editCube = null;
+        }
     };
 
     ffbUtils.cube.fillTable = function () {
@@ -244,10 +290,6 @@
         location.classList.add('ffb-dropdown-location');
         location.innerText = name;
         return location;
-    };
-
-    ffbUtils.location.fillDropDown = function () {
-        ffbUtils.store.locations
     };
 
     window.ffbUtils = ffbUtils;

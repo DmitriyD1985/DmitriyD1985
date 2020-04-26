@@ -4,5 +4,5 @@ document.addEventListener("DOMContentLoaded", function () {
     utils.spinner.createSpinner();
     utils.spinner.hideSpinner();
     utils.ajax.getProductionLocations();
-    utils.ajax.getCubes();
+    utils.cube.refreshTable();
 });

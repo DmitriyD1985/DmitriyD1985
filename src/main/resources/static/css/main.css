@@ -139,6 +139,19 @@
     height: 100%;
 }
 
+.ffb-edit-field-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
 .display-none {
     display: none;
+}
+
+.ffb-edit-record-location-name {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
 }

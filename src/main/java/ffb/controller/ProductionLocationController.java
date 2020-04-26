@@ -21,9 +21,7 @@ public class ProductionLocationController {
     }
 
     @GetMapping(path = "/{name}")
-    public ResponseEntity<ProductionLocation> getLocationByName(
-            @PathVariable(value = "name") String name
-    ) {
+    public ResponseEntity<ProductionLocation> getLocationByName(@PathVariable(value = "name") String name) {
         return new ResponseEntity<>(productionLocationRepository.findByName(name), HttpStatus.OK);
     }
 }
