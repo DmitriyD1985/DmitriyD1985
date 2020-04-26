@@ -15,8 +15,6 @@
         const dropDown = createRecordView.querySelector('.ffb-locations-dropdown-wrapper');
         dropDown.addEventListener('click', (event) => {
             //TODO: move to function
-            const dd = ffbUtils.store.createRecordView.querySelector('.ffb-locations-dropdown-wrapper');
-            let filedLocation = document.body.querySelector('.ffb-edit-field-location');
             const locationField = document.body.querySelector('.ffb-edit-record-location-name');
             locationField.innerText = event.target.innerText;
             dropDown.classList.add('display-none');
@@ -54,6 +52,7 @@
                 ffbUtils.spinner.fullScreenOverlay.style.display = 'none';
                 ffbUtils.store.createRecordView.style.display = 'none';
                 const color = document.body.querySelector('.ffb-edit-record-color').value;
+                const size = document.body.querySelector('.ffb-edit-record-size').value;
                 const locationField = document.body.querySelector('.ffb-edit-record-location-name');
                 const prodLocation = ffbUtils.store.locations.find(
                     (l) => l.name === locationField.innerText
@@ -61,7 +60,7 @@
                 let cube = {
                     color: color,
                     productionLocation: prodLocation,
-                    size: 0
+                    size: size
                 };
                 if (ffbUtils.store.editCube) {
                     const editCube = ffbUtils.store.editCube;
@@ -241,6 +240,7 @@
             ${cube.color}
             `;
         viewTemplate.querySelector('.cube-production-location').innerText = cube.productionLocation.name;
+        viewTemplate.querySelector('.cube-size').innerText = cube.size;
         let view = document.importNode(viewTemplate, true);
         view.cubeId = cube.id;
         view.querySelector('.fbb-cube-edit-btn')
@@ -260,15 +260,19 @@
     ffbUtils.cube.createNew = function (edit, cube) {
         ffbUtils.store.createRecordView.style.display = '';
         ffbUtils.spinner.fullScreenOverlay.style.display = '';
-        const editField = document.body.querySelector('.ffb-edit-record-color');
+        const colorField = document.body.querySelector('.ffb-edit-record-color');
+        const sizeField = document.body.querySelector('.ffb-edit-record-size');
         const locationField = document.body.querySelector('.ffb-edit-record-location-name');
         if (edit) {
-            editField.value = cube.color;
-            locationField.innerText = cube.productionLocation.name;
             ffbUtils.store.editCube = cube;
+
+            colorField.value = cube.color;
+            sizeField.value = cube.size;
+            locationField.innerText = cube.productionLocation.name;
         } else {
-            editField.value = '';
+            colorField.value = '';
             locationField.innerText = '';
+            sizeField.value = '';
             ffbUtils.store.editCube = null;
         }
     };

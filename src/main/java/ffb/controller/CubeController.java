@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+//TODO: add null check for create/update entities
 @RestController
 @RequestMapping(path = "cubes")
 public class CubeController {
@@ -46,10 +47,10 @@ public class CubeController {
             @RequestBody Cube cube
     ) throws NotFoundException {
         if (cubeRepository.existsById(id)) {
-            //TODO: have to implement update
             Cube editedCube = cubeRepository.findById(cube.getId()).get();
             editedCube.setColor(cube.getColor());
             editedCube.setProductionLocation(cube.getProductionLocation());
+            editedCube.setSize(cube.getSize());
             cubeRepository.save(editedCube);
          } else {
             throw new NotFoundException("a cube with id = " + id + " not exist");
