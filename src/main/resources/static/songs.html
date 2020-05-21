@@ -127,9 +127,8 @@
                         $("#msg").html( "<span style='color: green'>Композиция добавлена</span>" );
                         window.setTimeout(function(){location.reload()},1000)
                     },
-                    error: function(err) {
-                        alert("Название обязательно");
-                        $("#msg").html( "<span style='color: red'>Название обязательно</span>" );
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $('#msg').html('<p>status code: '+jqXHR.status+'</p><p>errorThrown: ' + errorThrown + '</p><p>jqXHR.responseText:</p><div>'+jqXHR.responseText + '</div>');
                     }
                 });
             });
@@ -151,11 +150,8 @@
                             });
                             location.reload(true)
                         },
-                        error: function() {
-                            alert("Ошибка удаления");
-                            $('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Ошибка удаления').fadeIn().fadeOut(4000, function() {
-                                $(this).remove();
-                            });
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            $('#msg').html('<p>status code: '+jqXHR.status+'</p><p>errorThrown: ' + errorThrown + '</p><p>jqXHR.responseText:</p><div>'+jqXHR.responseText + '</div>');
                         }
                     });
                 }
@@ -207,8 +203,8 @@
                                     name.html(name.children("input[type=text]").val());
                                     buttons.html("<button class='edit' id='" + id.html() + "'>Изменить</button>&nbsp;&nbsp;<button class='delete' id='" + id.html() + "'>Удалить</button>");
                                 },
-                                error: function() {
-                                    alert("Вы опять не заполнили название");
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    $('#msg').html('<p>status code: '+jqXHR.status+'</p><p>errorThrown: ' + errorThrown + '</p><p>jqXHR.responseText:</p><div>'+jqXHR.responseText + '</div>');
                                 }});
                         });
                 }});
