@@ -1,6 +1,5 @@
 package ffb.repository;
 
-
 import ffb.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

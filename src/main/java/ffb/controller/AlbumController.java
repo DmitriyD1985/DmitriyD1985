@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ffb.entity.Albums;
 import ffb.repository.AlbumsRepository;
 import ffb.service.AlbumService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class AlbumController {
     private AlbumService albumService;
     private AlbumsRepository albumsRepository;
 
+    @Autowired
     public AlbumController(AlbumService albumService, AlbumsRepository albumsRepository) {
         this.albumService = albumService;
         this.albumsRepository = albumsRepository;

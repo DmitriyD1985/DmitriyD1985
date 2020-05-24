@@ -19,11 +19,6 @@ public class UserServiceImpl implements UserService {
         return userDAO.listOfUsre();
     }
 
-//    @Override
-//    public User getUserByName(String login) {
-//        return userDAO.getUserByName(login);
-//    }
-
     @Override
     public void insertUser(User user) {
         userDAO.insertUser(user);
