@@ -18,7 +18,6 @@ public class Albums {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "albumName is required")
     private String albumName;
 
     @ManyToMany(fetch = FetchType.LAZY,
