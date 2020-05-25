@@ -37,7 +37,6 @@ public class SongsController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         List <Songs> list = songService.listOfSongs();
         ObjectMapper objectMapper = new ObjectMapper();
         String dataAnswer = null;
@@ -103,7 +102,6 @@ public class SongsController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(id);
         songService.removeSongs(songsRepository.getOne(id));
         return new ResponseEntity<Void>(HttpStatus.OK);
     }

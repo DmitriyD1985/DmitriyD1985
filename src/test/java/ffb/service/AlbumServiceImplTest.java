@@ -1,30 +1,37 @@
 package ffb.service;
 
+import ffb.FfbApplication;
+import ffb.config.H2TestProfileJPAConfig;
 import ffb.entity.Albums;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.test.context.ActiveProfiles;
 import javax.transaction.Transactional;
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@Transactional
-class AlbumServiceImplTest {
-    Albums returnedAlbum = new Albums(1l, "albumName", null, null);
 
+@SpringBootTest(classes = {
+        FfbApplication.class,
+        H2TestProfileJPAConfig.class})
+@Transactional
+@ActiveProfiles("test")
+class AlbumServiceImplTest {
+    Albums returnedAlbum;
+
+    //C мокито только один тест, исключительно для примера
     @Mock
     private AlbumService albumService2;
 
-    @BeforeEach
+    @BeforeClass
     void setMockOutput() {
+        returnedAlbum = new Albums(1l, "albumName", null, null);
         when(albumService2.getAlbumsByName("albumName")).thenReturn(returnedAlbum);
     }
 

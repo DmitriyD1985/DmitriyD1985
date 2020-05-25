@@ -1,17 +1,24 @@
 package ffb.service;
 
+import ffb.FfbApplication;
+import ffb.config.H2TestProfileJPAConfig;
 import ffb.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@SpringBootTest
+@SpringBootTest(classes = {
+        FfbApplication.class,
+        H2TestProfileJPAConfig.class})
 @Transactional
+@ActiveProfiles("test")
 class UserServiceImplTest {
 
     @Autowired
