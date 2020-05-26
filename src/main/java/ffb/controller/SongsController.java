@@ -4,22 +4,29 @@ package ffb.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ffb.AOP.AspectLogger;
 import ffb.entity.Albums;
 import ffb.entity.Songs;
 import ffb.repository.SongsRepository;
 import ffb.service.AlbumService;
 import ffb.service.SongService;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 
 @RestController
 @RequestMapping(path = "song")
 public class SongsController {
-
+    private static final Logger logger = LogManager.getLogger(SongsController.class);
     private SongService songService;
     private SongsRepository songsRepository;
     private AlbumService albumService;
@@ -32,6 +39,7 @@ public class SongsController {
 
     @GetMapping("/list")
     public ResponseEntity<String> getSongsList() {
+        logger.log(Level.INFO, "логируем по паттерну");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -50,7 +58,8 @@ public class SongsController {
 
     @GetMapping("/{name}")
     public ResponseEntity<Songs> getSongs(@PathVariable String name) {
-        try {
+        logger.log(Level.INFO, "логируем по паттерну");
+               try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -60,6 +69,7 @@ public class SongsController {
 
     @PostMapping("/save")
     public ResponseEntity<Void> saveSongs(@RequestBody String json) {
+        logger.log(Level.INFO, "логируем по паттерну");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -86,6 +96,7 @@ public class SongsController {
 
     @PostMapping("/update")
     public ResponseEntity<Void> updateSongs(@RequestBody Songs song) {
+        logger.log(Level.INFO, "логируем по паттерну");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -97,7 +108,8 @@ public class SongsController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteSongs(@PathVariable Long id) {
-        try {
+        logger.log(Level.INFO, "логируем по паттерну");
+               try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();

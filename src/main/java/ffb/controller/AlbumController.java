@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ffb.entity.Albums;
 import ffb.repository.AlbumsRepository;
 import ffb.service.AlbumService;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "album")
 public class AlbumController {
-
+    private static final Logger logger = LogManager.getLogger(AlbumController.class);
     private AlbumService albumService;
     private AlbumsRepository albumsRepository;
 
@@ -28,6 +31,7 @@ public class AlbumController {
 
     @GetMapping("/list")
     public ResponseEntity<String> getAlbumsList() {
+        logger.log(Level.INFO, "логируем по паттерну");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -46,6 +50,7 @@ public class AlbumController {
 
     @GetMapping("/{name}")
     public ResponseEntity<Albums> getAlbum(@PathVariable String name) {
+        logger.log(Level.INFO, "логируем по паттерну");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -56,6 +61,7 @@ public class AlbumController {
 
     @PostMapping("/save")
     public ResponseEntity<Void> saveAlbums(@RequestBody String json) {
+        logger.log(Level.INFO, "логируем по паттерну");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -77,6 +83,7 @@ public class AlbumController {
 
     @PostMapping("/update")
     public ResponseEntity<Void> updateAlbums(@RequestBody Albums albums) {
+        logger.log(Level.INFO, "логируем по паттерну");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -88,6 +95,7 @@ public class AlbumController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteAlbums(@PathVariable Long id) {
+        logger.log(Level.INFO, "логируем по паттерну");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

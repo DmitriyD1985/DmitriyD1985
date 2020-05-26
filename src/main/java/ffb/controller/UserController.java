@@ -8,6 +8,9 @@ import ffb.entity.User;
 import ffb.repository.UsersRepository;
 import ffb.service.AlbumService;
 import ffb.service.UserService;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "user")
 public class UserController {
-
+    private static final Logger logger = LogManager.getLogger(UserController.class);
     private UserService userService;
     private UsersRepository usersRepository;
     private AlbumService albumService;
@@ -31,6 +34,7 @@ public class UserController {
 
     @GetMapping("/list")
     public ResponseEntity<String> getUsersList() {
+        logger.log(Level.INFO, "логируем по паттерну");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -50,6 +54,7 @@ public class UserController {
 
     @PostMapping("/save")
     public ResponseEntity<Void> saveUser(@RequestBody String json) {
+        logger.log(Level.INFO, "логируем по паттерну");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -74,6 +79,7 @@ public class UserController {
 
     @PostMapping("/update")
     public ResponseEntity<Void> updateUser(@RequestBody User user) {
+        logger.log(Level.INFO, "логируем по паттерну");
 
         try {
             Thread.sleep(1000);
@@ -86,6 +92,7 @@ public class UserController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUsre(@PathVariable Long id) {
+        logger.log(Level.INFO, "логируем по паттерну");
         User userForDelete = usersRepository.getOne(id);
         userForDelete.setUserA(null);
         userForDelete.setUserProfile(null);
